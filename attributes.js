@@ -28,15 +28,17 @@ var gardensWithAttributes = [];
 	var attributes = []; 
 	
 	for (const emoji of Object.keys(occurences)) { 
-		attributes.push(emoji); 
-		if(occurences[emoji]>1){ 
+		if(occurences[emoji]>3) { 
+			attributes.push(emoji+emoji+emoji+emoji); 
+		}
+		else if(occurences[emoji]>2) { 
+			attributes.push(emoji+emoji+emoji); 
+		}
+		else if(occurences[emoji]>1) { 
 			attributes.push(emoji+emoji); 
-			if(occurences[emoji]>2){
-				attributes.push(emoji+emoji+emoji); 
-				if(occurences[emoji]>3) { 
-					attributes.push(emoji+emoji+emoji+emoji); 
-				}
-			}
+		}
+		else { 
+			attributes.push(emoji); 
 		}
 	}
 	
