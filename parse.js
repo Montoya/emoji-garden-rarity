@@ -3,13 +3,13 @@ const fs = require("fs");
 
 (async () => {
   // Load loot data
-  const data = await fs.readFileSync("./output/loot.json");
+  const data = await fs.readFileSync("./output/gardens_with_attributes.json");
   const loot = JSON.parse(data);
 
   // Calculate attribute rarities
   let rarityIndex = {};
   for (let i = 0; i < loot.length; i++) {
-    const attributes = loot[i][(i + 1).toString()];
+    const attributes = loot[i]['attributes'];
 
     // Add up number of occurences of attributes
     for (const attribute of Object.values(attributes)) {
@@ -29,12 +29,12 @@ const fs = require("fs");
   let scores = [];
   for (let i = 0; i < loot.length; i++) {
     let score = 0;
-    const attributes = loot[i][(i + 1).toString()];
+    const attributes = loot[i]['attributes'];
 
     for (const attribute of Object.values(attributes)) {
       score += rarityIndex[attribute];
     }
-    scores.push({ lootId: i + 1, score });
+    scores.push({ gardenId: i + 1, score });
   }
 
   // Sort by score
@@ -52,16 +52,17 @@ const fs = require("fs");
   let probability = [];
   for (let i = 0; i < loot.length; i++) {
     let scores = [];
-    const attributes = loot[i][(i + 1).toString()];
+	const emoji = loot[i]['emoji']; 
+    const attributes = loot[i]['attributes'];
 
     for (const attribute of Object.values(attributes)) {
       // Collect probability of individual attribute occurences
-      scores.push(rarityIndex[attribute] / 8000);
+      scores.push(rarityIndex[attribute] / 362);
     }
 
     // Multiply probabilites P(A and B) = P(A) * P(B)
     const p = scores.reduce((a, b) => a * b);
-    probability.push({ lootId: i + 1, score: p });
+    probability.push({ gardenId: i + 1, score: p, emoji: emoji, attributes: attributes });
   }
 
   // Sort by probability
@@ -70,7 +71,7 @@ const fs = require("fs");
   probability = probability.map((loot, i) => ({
     ...loot,
     score: Math.abs(Math.log(loot.score)),
-    rarest: i + 1,
+    rarest: i + 1
   }));
 
   // Print loot rarity by score
