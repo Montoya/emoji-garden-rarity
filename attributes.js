@@ -13,12 +13,17 @@ var gardensWithAttributes = [];
 	const gardenId = loot[i]['id']; 
     const gardenEmoji = loot[i]['emoji'];
 	
+	if(parseInt(gardenId)>4420) { continue; }
+	
 	var occurences = []; 
+	
+	var rares = 0;  
 	
     // Add up number of occurences of attributes
     for (const emoji of Object.values(gardenEmoji)) {
 		if(emoji!="🌼" && emoji!="🌻") { 
 			occurences[emoji] = occurences[emoji] ? occurences[emoji] + 1 : 1; 
+			rares = rares + 1; 
 		}
 		else { 
 			occurences[emoji] = 1; 
@@ -41,6 +46,8 @@ var gardensWithAttributes = [];
 			attributes.push(emoji); 
 		}
 	}
+	
+	attributes.push("Rares:"+rares); 
 	
 	if(gardenEmoji[0]==gardenEmoji[2]==gardenEmoji[6]==gardenEmoji[8]==gardenEmoji[1]==gardenEmoji[3]==gardenEmoji[5]==gardenEmoji[7]) { 
 		attributes.push("Symmetry:Perfect"); 
